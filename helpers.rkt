@@ -4,11 +4,8 @@
 (provide square)
 (provide inc)
 (provide sum-of-squares)
-<<<<<<< HEAD
 (provide identity)
-=======
 (provide gcd)
->>>>>>> cff015701a760a9a2cb56af6921b3e104e765b10
 
 (define (square x)
   (* x x))
@@ -19,14 +16,13 @@
 (define (sum-of-squares x y)
   (+ (square x) (square y)))
 
-<<<<<<< HEAD
+
 (define (identity x) x)
-=======
+
 (define (gcd a b)
   (if (= b 0)
       a
       (gcd b (remainder a b))))
->>>>>>> cff015701a760a9a2cb56af6921b3e104e765b10
 
 (check-equal? (square 2) 4)
 (check-equal? (inc 2) 3)
