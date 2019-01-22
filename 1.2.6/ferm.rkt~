@@ -1,3 +1,0 @@
-#lang racket
-(require rackunit)
-(require (only-in "../helpers.rkt" square))
