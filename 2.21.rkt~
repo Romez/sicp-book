@@ -1,7 +1,0 @@
-#lang racket
-(require "./helpers.rkt")
-
-(define (square-list items)
-  (if (null? items)
-      null
-      (cons (
