@@ -1,0 +1,14 @@
+#lang racket
+
+(define (deep-revert l)
+  (define (iter acc rest)
+    (if (null? rest)
+        acc
+        (iter
+         (append (if (list? (car rest))
+                           (list (deep-revert (car rest)))
+                           (list (car rest)))
+                           acc)
+         (cdr rest))))
+  
+  (iter (list) l))
