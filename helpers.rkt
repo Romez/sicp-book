@@ -6,6 +6,8 @@
 (provide sum-of-squares)
 (provide identity)
 (provide gcd)
+(provide accumulate)
+(provide filter)
 
 (define (square x)
   (* x x))
@@ -49,15 +51,13 @@
 (define (filter predicate sequence)
   (cond ((null? sequence) null)
         ((predicate (car sequence))
-         (cons (car sequence)
-               (filter predicate (cdr sequence))))
+         (cons (car sequence) (filter predicate (cdr sequence))))
         (else (filter predicate (cdr sequence)))))
 
 (define (accumulate op initial sequence)
   (if (null? sequence)
       initial
-      (op (car sequence)
-          (accumulate op initial (cdr sequence)))))
+      (op (car sequence) (accumulate op initial (cdr sequence)))))
 
 
 (check-equal? (square 2) 4)
