@@ -14,4 +14,6 @@
             (pascal (- row 1) col))]
     ))
 
+(check-equal? (pascal 4 1) 4)
+(check-equal? (pascal 4 2) 6)
 
