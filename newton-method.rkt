@@ -14,7 +14,7 @@
 (define (sqrt-iter guess x)
   (if ( good-enough? guess x)
      guess
-     (sqrt-iter (improve guess x) x))) 
+     (sqrt-iter (improve guess x) x)))
 
 (define (sqrt x)
   (sqrt-iter 1.0 x))
@@ -23,4 +23,3 @@
 (check-equal? (sqrt (+ 100 37)) 11.704699917758145)
 (check-equal? (sqrt (+ (sqrt 2) (sqrt 3))) 1.7739279023207892)
 (check-equal? (square (sqrt 1000)) 1000.000369924366)
-    
