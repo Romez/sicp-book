@@ -8,6 +8,7 @@
 (provide gcd)
 (provide accumulate)
 (provide filter)
+(provide flatMap)
 
 (define (square x)
   (* x x))
@@ -59,6 +60,9 @@
       initial
       (op (car sequence) (accumulate op initial (cdr sequence)))))
 
+#| (define (flatmap proc seq) |#
+#|   () |#
+#|   ) |#
 
 (check-equal? (square 2) 4)
 (check-equal? (inc 2) 3)
