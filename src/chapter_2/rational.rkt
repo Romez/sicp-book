@@ -3,10 +3,12 @@
 (provide (all-defined-out))
 
 (define (make-rat n d)
-  (let ((g (gcd n d)))
-    (cons (/ n g) (/ d g))))
+  (let ([g (gcd n d)]
+        [sign (if (positive? d) + -) ])
+    (cons (/ n (sign g)) (/ d (sign g)))))
 
 (define (numer x) (car x))
+
 (define (denom x) (cdr x))
 
 (define (add-rat x y)
