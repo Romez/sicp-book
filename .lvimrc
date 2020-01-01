@@ -1,0 +1,1 @@
+let g:test#racket#rackunit#file_pattern = '\/.*-test\.rkt$'

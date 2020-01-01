@@ -1,14 +1,7 @@
 #lang racket/base
 (require rackunit)
 
-(provide square)
-(provide inc)
-(provide sum-of-squares)
-(provide identity)
-(provide gcd)
-(provide accumulate)
-(provide filter)
-(provide flatMap)
+(provide (all-defined-out))
 
 (define (square x)
   (* x x))
