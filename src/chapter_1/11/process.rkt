@@ -1,6 +1,6 @@
 #lang racket
 
-(require rackunit)
+(provide (all-defined-out))
 
 (define (f n)
   (if (< n 3)
@@ -18,9 +18,3 @@
   (if (< n 3)
       n
       (fi-iter 2 1 0 n)))
-
-(check-equal? (f 4) 6)
-(check-equal? (f 5) 11)
-
-(check-equal? (fi 4) 6)
-(check-equal? (fi 5) 11)
