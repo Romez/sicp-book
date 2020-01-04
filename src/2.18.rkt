@@ -8,4 +8,4 @@
         (iter (append (list (car rest)) acc) (cdr rest))))
   (iter (list) l))
 
-(check-equal? (reverse (list 1 2 3)) (list 3 2 1))
+(check-eq? (reverse (list 1 2 3)) (list 3 2 1))

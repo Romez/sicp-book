@@ -1,6 +1,5 @@
 #lang racket
 (require rackunit)
-(require (only-in "../helpers.rkt" identity)) 
 
 (define (sum term a next b)
   (if (> a b)

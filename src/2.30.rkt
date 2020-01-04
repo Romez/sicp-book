@@ -14,7 +14,6 @@
                      (list (square-tree (car tree)))))
          (cdr tree))))
   (iter (list) tree))
-    
 
 (check-equal?
  (square-tree (list 1

@@ -13,7 +13,6 @@
     (report-prime (- (current-inexact-milliseconds) start-time))
     (display "*")
     )
-    
 )
 
 (define (report-prime elapsed-time)

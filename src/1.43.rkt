@@ -8,5 +8,4 @@
       (lambda (x) ((compose (repeated f (sub1 n)) f) x))
       f))
 
-(check-equal? ((repeated square 2) 5) 625)
-        
+(check-eq? ((repeated square 2) 5) 625)

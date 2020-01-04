@@ -22,7 +22,4 @@
 (check-equal? (smallest-divisor 1999) 1999)
 (check-equal? (smallest-divisor 19999) 7)
 
-
 (check-true (divides? 2 2))
-
-

@@ -17,6 +17,3 @@
 
 (define (branch-structure b)
   (cdr b))
-
-#; (define (total-weight tree)
-

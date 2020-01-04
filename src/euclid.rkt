@@ -7,4 +7,4 @@
     a
     (nod b (remainder a b))))
 
-(check-equal? (nod 206 40) 2)
+(check-eq? (nod 206 40) 2)

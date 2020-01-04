@@ -3,14 +3,14 @@
 
 (define (make-account secret balance [max-attempts 7])
   (define attempts 0)
-  
+
   (define (withdraw amount)
     (if (>= balance amount)
         (begin
           (set! balance (- balance amount))
           balance)
         "not enougth money"))
-  
+
   (define (deposit amount)
     (set! balance (+ balance amount))
     balance)

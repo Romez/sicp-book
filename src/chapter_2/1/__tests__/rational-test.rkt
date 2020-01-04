@@ -6,11 +6,11 @@
   "should result in the greatest common divisor"
   (define one-half (make-rat 2 4))
 
-  (check-equal? (numer one-half) 1)
-  (check-equal? (denom one-half) 2))
+  (check-eq? (numer one-half) 1)
+  (check-eq? (denom one-half) 2))
 
 (test-case
   "should make negative rational number"
 
-  (check-equal? (numer (make-rat -1 2)) -1)
-  (check-equal? (denom (make-rat 1 -2) ) 2))
+  (check-eq? (numer (make-rat -1 2)) -1)
+  (check-eq? (denom (make-rat 1 -2) ) 2))

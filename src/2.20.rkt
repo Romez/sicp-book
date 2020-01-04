@@ -1,8 +1,6 @@
 #lang racket
 (require rackunit)
 
-
-
 (define (same-parity . z)
   (filter (if (even? (car z))
               even?

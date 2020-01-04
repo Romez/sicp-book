@@ -12,9 +12,6 @@
 (define (sum-of-squares x y)
   (+ (square x) (square y)))
 
-
-(define (identity x) x)
-
 (define (gcd a b)
   (if (= b 0)
       a
@@ -52,10 +49,6 @@
   (if (null? sequence)
       initial
       (op (car sequence) (accumulate op initial (cdr sequence)))))
-
-#| (define (flatmap proc seq) |#
-#|   () |#
-#|   ) |#
 
 (check-equal? (square 2) 4)
 (check-equal? (inc 2) 3)

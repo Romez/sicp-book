@@ -8,7 +8,7 @@
           (set! balance (- balance amount))
           balance)
         "not enougth money"))
-  
+
   (define (deposit amount)
     (set! balance (+ balance amount))
     balance)
@@ -19,7 +19,7 @@
           (else (error "undefined message"))))
 
   dispatch)
- 
+
 (define acc (make-account `pass 100))
 
 (check-equal? ((acc `pass `deposit) 100) 200)
