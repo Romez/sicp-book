@@ -1,5 +1,6 @@
 #lang racket
-(require rackunit)
+
+(provide (all-defined-out))
 
 (define (reverse l)
   (define (iter acc rest)
@@ -7,5 +8,3 @@
         acc
         (iter (append (list (car rest)) acc) (cdr rest))))
   (iter (list) l))
-
-(check-eq? (reverse (list 1 2 3)) (list 3 2 1))
