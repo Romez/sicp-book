@@ -1,6 +1,6 @@
 #lang racket
 
-(require rackunit)
+(provide (all-defined-out))
 
 (define (square-tree tree)
   (define (iter acc tree)
@@ -9,13 +9,10 @@
         (iter
          (append acc
                  (if (not (list? (car tree)))
-                     (list (square (car tree)))
+                     (list (expt (car tree) 2))
                      (list (square-tree (car tree)))))
          (cdr tree))))
   (iter (list) tree))
 
-(check-equal?
- (square-tree (list 1
-                    (list 2 (list 3 4) 5)
-                    (list 6 7)))
- (list 1 (list 4 (list 9 16) 25) (list 36 49)))
+(define (map-tree fn tree)
+  (map (lambda (x) (if (pair? x) (map-tree fn x) (fn x))) tree))
