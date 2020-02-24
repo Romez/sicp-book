@@ -1,7 +1,6 @@
 #lang racket
 
 (require rackunit)
-(require "./helpers.rkt")
 
 (define (square-tree tree)
   (define (iter acc tree)
