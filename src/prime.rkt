@@ -1,6 +1,6 @@
 #lang racket/base
 (require rackunit)
-(require (only-in "../helpers.rkt" square))
+(require (only-in "./helpers.rkt" square))
 
 (provide prime?)
 
