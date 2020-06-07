@@ -1,4 +1,4 @@
-![sicp ci](https://github.com/Romez/sicp-book/workflows/sicp%20ci/badge.svg)
+![sicp](https://github.com/Romez/sicp-book/workflows/sicp%20ci/badge.svg)
 
 ## Structure and Interpretation of Computer Programs
 
