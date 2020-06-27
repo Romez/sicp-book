@@ -4,7 +4,6 @@
 
 (define (make-leaf symbol weight)
   (list 'leaf symbol weight))
-
 (define (leaf? object)
   (eq? (car object) 'leaf))
 
@@ -48,3 +47,4 @@
   (cond ((= bit 0) (left-branch branch))
         ((= bit 1) (right-branch branch))
         (else (error "bad bit: CHOOSE-BRANCH:" bit))))
+
