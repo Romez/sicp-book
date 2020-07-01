@@ -9,7 +9,7 @@
 (define (successive-merge trees) 
   (if (null? (cdr trees)) 
       (car trees) 
-      (successive-merge(adjoin-set (make-code-tree (car trees) 
+      (successive-merge(adjoin-leaf-set (make-code-tree (car trees) 
                                                     (cadr trees)) 
                                     (cddr trees)))))
 

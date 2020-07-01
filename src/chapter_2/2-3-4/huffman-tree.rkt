@@ -48,16 +48,16 @@
         ((= bit 1) (right-branch branch))
         (else (error "bad bit: CHOOSE-BRANCH:" bit))))
 
-(define (adjoin-set x set)
+(define (adjoin-leaf-set x set)
   (cond
     [(null? set) (list x)]
     [(< (weight x) (weight (car set))) (cons x set)]
-    [else (cons (car set) (adjoin-set x (cdr set)))]))
+    [else (cons (car set) (adjoin-leaf-set x (cdr set)))]))
 
 (define (make-leaf-set pairs)
   (if (null? pairs)
     '()
     (let ([pair (car pairs)])
-      (adjoin-set
+      (adjoin-leaf-set
         (make-leaf (car pair) (cadr pair))
         (make-leaf-set (cdr pairs))))))

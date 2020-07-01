@@ -1,5 +1,5 @@
 #lang racket
-(require "./huffman-tree.rkt" "../60/sets.rkt" "./sample-tree.rkt")
+(require "./huffman-tree.rkt" "./sample-tree.rkt" "../2-3-3/60/sets.rkt")
 
 (provide (all-defined-out))
 
