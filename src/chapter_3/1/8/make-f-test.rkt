@@ -1,10 +1,5 @@
 #lang racket
-(require rackunit)
-
-(define (make-f)
-  (let ([val null])
-    (lambda (x)
-      (if (null? val) (begin (set! val x) x) 0))))
+(require "./make-f.rkt" rackunit)
 
 (define f (make-f))
 (define fn (make-f))
