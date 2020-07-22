@@ -11,3 +11,6 @@
   (if (> low high)
     empty-stream
     (stream-cons low (stream-enumerate-interval (+ low 1) high))))
+
+(define (scale-stream s factor)
+  (stream-map (lambda (x) (* x factor)) s))
