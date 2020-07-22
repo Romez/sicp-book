@@ -1,12 +1,17 @@
 #lang racket
 
-(require (only-in "../streams.rkt" stream-null? the-empty-stream stream-car stream-cdr))
+(require (only-in racket/stream
+                  stream-empty?
+                  empty-stream
+                  stream-cons
+                  stream-first
+                  stream-rest))
 
 (provide (all-defined-out))
 
 (define (stream-map proc . argstreams)
-  (if (stream-null? (car argstreams))
-    the-empty-stream
-    (cons
-      (apply proc (map stream-car argstreams))
-      (apply stream-map (cons proc (map stream-cdr argstreams))))))
+  (if (stream-empty? (car argstreams))
+    empty-stream
+    (stream-cons
+      (apply proc (map stream-first argstreams))
+      (apply stream-map (cons proc (map stream-rest argstreams))))))
