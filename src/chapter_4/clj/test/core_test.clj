@@ -11,10 +11,10 @@
   (t/testing "resolve var"
     (t/is (= 33
              (sut/eval 'x (->> env/empty-env
-                               (env/extend-env (list 'x) (list 33))))))))
+                               (env/extend-env (list 'x) (list 33)))))))
+  (t/testing "text of quotation'"
+    (t/is (= 'text
+             (sut/eval '(quote text) env/empty-env)))))
 
-(t/deftest test-variable?
-  (t/is (true? (sut/variable? 'x)))
-  (t/is (false? (sut/variable? 10))))
 
 
