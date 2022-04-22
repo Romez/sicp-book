@@ -1,5 +1,4 @@
 #lang racket
-(require rackunit)
 
 (define (square x)
   (* x x))
@@ -21,5 +20,8 @@
     guess
     (sqrt-iter (improve guess x) guess x)))
 
+(module+ test
+  (require rackunit)
+  (check-eq? (sqrt 0.0000004) 0.0006324555332972723))
 
-(check-eq? (sqrt 0.0000004) 0.0006324555332972723)
+

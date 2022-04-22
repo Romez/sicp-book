@@ -1,5 +1,4 @@
 #lang racket
-(require rackunit)
 
 (define (sum term a next b)
   (if (> a b)
@@ -10,4 +9,6 @@
 (define (sum-integers a b)
   (sum identity a add1 b))
 
-(check-equal? (sum-integers 1 10) 55)
+(module+ test
+  (require rackunit)
+   (check-equal? (sum-integers 1 10) 55))
