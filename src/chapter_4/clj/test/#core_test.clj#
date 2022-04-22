@@ -1,0 +1,30 @@
+(ns eval.core-test
+  (:require
+   [clojure.test :as t]
+   [eval.core :as sut]
+   [eval.environment :as env]))
+
+(t/deftest test-eval
+  (t/testing "return self evaluated value"
+    (t/is (= 10 (sut/eval 10 env/empty-env)))
+    (t/is (= "test" (sut/eval "test" nil))))
+  (t/testing "return variable value"
+    (t/is (= 33
+             (sut/eval 'x (->> env/empty-env
+                               (env/extend-env (list 'x) (list 33)))))))
+  (t/testing "text of quotation"
+    (t/is (= 'text
+             (sut/eval '(quote text) env/empty-env))))
+
+  (t/testing "define variable"
+    (let [e (-> env/empty-env
+                (env/extend-env '() '()))]
+      (sut/eval '(define x 3) e)
+      (t/is (= 3 (sut/eval 'x e)))))
+  (t/testing "define fn")
+  (t/testing "define variable with eval")
+
+  )
+
+
+

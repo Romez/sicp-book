@@ -29,3 +29,27 @@
 (defn text-of-quotation
   [exp]
   (second exp))
+
+(defn definition?
+  [exp]
+  (tagged-list? exp 'define))
+
+(defn definition-variable
+  [exp]
+  (if (symbol? (second exp))
+    (second exp)
+    (first (second exp))))
+
+(defn make-lambda
+  [parameters body]
+  (list 'lambda parameters body))
+
+(defn definition-value
+  [exp]
+  (if (symbol? (second exp))
+    (nth exp 2)
+    (make-lambda (-> exp
+                     second
+                     rest)
+                 (-> exp
+                     (nth 2)))))

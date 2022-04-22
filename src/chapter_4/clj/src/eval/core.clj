@@ -14,5 +14,12 @@
 
     (expr/quoted? exp)
     (expr/text-of-quotation exp)
+
+    (expr/definition? exp)
+    (env/define-variable!
+      (expr/definition-variable exp)
+      (expr/definition-value exp)
+      env)
     
-    :else (throw (format "Unkonown expression type: %s" exp))))
+    :else
+    (throw (Exception. "Unknown expression type"))))

@@ -4,31 +4,32 @@
    [clojure.test :as t]))
 
 (t/deftest test-make-frame
-  (t/is (= (list '() '())
-           @(env/make-frame '() '())))
-  (t/testing "check selectors"
-    (let [frame (env/make-frame (list 'x) (list 1))]
-      (t/is (= (list 'x)
-               (env/frame-variables frame)))
-      (t/is (= (list 1)
-               (env/frame-values frame))))))
+  (t/testing "empty frame"
+    (t/is (= '()
+             @(env/make-frame '() '()))))
+  (t/testing "frame with values"
+    (t/is (= (list '(x 1) '(y 2))
+             @(env/make-frame '(x y) '(1 2)))))
+  #_(t/testing "check selectors"
+      (let [frame (env/make-frame (list 'x) (list 1))]
+        (t/is (= (list 'x)
+                 (env/frame-variables frame)))
+        (t/is (= (list 1)
+                 (env/frame-values frame))))))
 
 (t/deftest test-add-binding-to-frame
   (let [frame (env/make-frame '() '())]
     (t/testing "add to emtpy frame"
       (env/add-binding-to-frame 'x 1 frame)
-      (t/is (= (list (list 'x)
-                     (list 1))
+      (t/is (= (list '(x 1))
                @frame)))
     (t/testing "append to frame"
       (env/add-binding-to-frame 'y 2 frame)
-      (t/is (= (list (list 'y 'x)
-                     (list 2 1))
+      (t/is (= (list '(y 2) '(x 1))
                @frame)))))
 
 (t/deftest test-extend-env
-  (t/is (= (list (list 'x)
-                 (list 1))
+  (t/is (= (list '(x 1))
            @(->> env/empty-env
                  (env/extend-env (list 'x) (list 1))
                  (env/first-frame)))))
@@ -57,10 +58,15 @@
       (t/is (= 3
                (env/lookup-variable-value 'z current-env))))))
 
-(comment
-  ("ok")
-  (list
-   (list 3 4)
-   (list 1 2)
-   "ok"))
-(+ 1 1)
+(t/deftest test-define-variable
+  (t/testing "define binding"
+    (let [current-env (env/extend-env '() '() env/empty-env)]
+      (env/define-variable! 'x 10 current-env)
+      (t/is (= (list (list 'x 10))
+               @(env/first-frame current-env)))))
+  (t/testing "redefine binding"
+    (let [current-env (env/extend-env '(y x) '(30 10) env/empty-env)]
+      (env/define-variable! 'x 20 current-env)
+      (t/is (= (list '(y 30) '(x 20))
+               @(env/first-frame current-env)))
+      )))
