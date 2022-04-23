@@ -44,3 +44,29 @@
   (t/testing "make lambda"
     (t/is (= '(lambda (x) (+ x 1))
              (sut/make-lambda '(x) '(+ x 1))))))
+
+(t/deftest test-primitive-procedure?
+  (t/is (true? (sut/primitive-procedure?
+                '(primitive)))))
+
+(t/deftest test-application?
+  (t/is (true? (sut/application? '(+ 1 1))))
+  (t/is (false? (sut/application? 1))))
+
+(t/deftest test-operator
+  (t/is (= 'null?
+           (sut/operator '(null?)))))
+
+(t/deftest test-operands
+  (t/is (= '(1 2 3)
+           (sut/operands '(+ 1 2 3)))))
+
+(t/deftest test-no-operands?
+  (t/is (true? (sut/no-operands? (sut/operands '(x)))))
+  (t/is (false? (sut/no-operands? (sut/operands '(+ 1 2))))))
+
+(t/deftest test-first-operand
+  (t/is (= 1 (sut/first-operand (sut/operands '(+ 1 2))))))
+
+(t/deftest test-rest-operands
+  (t/is (= '(2 3) (sut/rest-operands (sut/operands '(+ 1 2 3))))))
