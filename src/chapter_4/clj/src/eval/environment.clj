@@ -4,7 +4,7 @@
 
 (defn first-frame
   [env]
-  (first env)) 
+  (first env))
 
 (defn enclosing-env
   [env]
@@ -26,24 +26,23 @@
               (if (= env empty-env)
                 (throw (format "%s variable not found" var))
                 (let [frame (first-frame env)]
-                  (scan @frame)))))]
+                  (scan frame)))))]
     (env-loop env)))
 
 (defn make-frame
   [variables values]
-  (atom (map (fn [variable value]
-               (list variable value))
-             variables
-             values)))
+  (java.util.LinkedList. (map (fn [variable value]
+                                (java.util.LinkedList. (list variable value)))
+                              variables
+                              values)))
 
 (defn add-binding-to-frame
   [variable value frame]
-  (reset! frame (cons (list variable value) @frame))
-  frame)
+  (.addFirst frame (java.util.LinkedList. (list variable value))))
 
 (defn extend-env
   [variables values base-env]
-  (cons (make-frame variables values) base-env))
+  (conj base-env (make-frame variables values)))
 
 (defn define-variable!
   [variable value env]
@@ -55,13 +54,8 @@
                   (add-binding-to-frame variable value frame)
 
                   (= variable (first binding))
-                  (reset! frame (map
-                                 (fn [[k v]]
-                                   (if (= variable k)
-                                     (list k value)
-                                     (list k v)))
-                                 @frame))
-
+                  (.set binding 1 value)
+                  
                   :else
                   (scan (rest bindings)))))]
-      (scan @frame))))
+      (scan frame))))
