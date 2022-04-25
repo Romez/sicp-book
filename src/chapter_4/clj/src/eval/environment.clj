@@ -55,7 +55,29 @@
 
                   (= variable (first binding))
                   (.set binding 1 value)
-                  
+
                   :else
                   (scan (rest bindings)))))]
       (scan frame))))
+
+(defn set-variable-value!
+  [variable value env]
+  (letfn [(env-loop [env]
+            (letfn [(scan [bindings]
+                      (let [binding (first bindings)]
+                        (cond
+                          (nil? binding)
+                          (env-loop (enclosing-env env))
+
+                          (= variable (first binding))
+                          (.set binding 1 value)
+
+                          :else
+                          (scan (rest bindings)))))]
+              (prn 'OK env empty-env)
+              (if (= empty-env env)
+                (throw (Exception.
+                        (str "Unbound variable -- SET!: " variable)))
+                (let [frame (first-frame env)]
+                  (scan frame)))))]
+    (env-loop env)))

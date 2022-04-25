@@ -52,6 +52,32 @@
     (t/is (false? (sut/lambda? '())))
     (t/is (false? (sut/lambda? '(x))))))
 
+(t/deftest test-make-lambda
+  (t/is (= '(lambda (x) x)
+           (sut/make-lambda '(x) '(x))))
+  (t/is (= '(lambda (x)
+                    (prn x)
+                    x)
+           (sut/make-lambda '(x) '((prn x)
+                                   x))))
+  (t/is (= '(lambda (x y)
+                    (prn x y)
+                    (+ x y))
+           (sut/make-lambda '(x y)
+                            '((prn x y)
+                              (+ x y))))))
+
+(t/deftest test-lambda
+    (t/testing "lambda parameters"
+    (let [lambda (sut/make-lambda '(x) '(+ x 1))]
+      (t/is (= '(x)
+               (sut/lambda-parameters lambda)))))
+
+  (t/testing "lambda body"
+    (let [lambda (sut/make-lambda '(x) '((+ x 1)))]
+      (t/is (= '((+ x 1))
+               (sut/lambda-body lambda))))))
+
 ; primitive procedure
 (t/deftest test-primitive-procedure
   (t/testing "prmitive-procedure?"
@@ -121,3 +147,14 @@
   (t/testing "rest-exps"
     (t/is (= '((- 2 1))
              (sut/rest-exps '((+ 1 1) (- 2 1)))))))
+
+(t/deftest test-assignment
+  (t/testing "assignment?"
+    (t/is (true? (sut/assignment? '(set! x (add1 x))))))
+  (t/testing "assignment-variable"
+    (t/is (= 'x
+             (sut/assignment-variable '(set! x (add1 x))))))
+  (t/testing "assignment-value"
+    (t/is (= '(add1 x)
+             (sut/assignment-value '(set! x (add1 x)))))))
+

@@ -5,7 +5,7 @@
 (defn tagged-list?
   [exp tag]
   (if (seq? exp)
-    (= (fist exp) tag)
+    (= (first exp) tag)
     false))
 
 (defn self-evaluating?
@@ -37,6 +37,18 @@
 (defn lambda?
   [exp]
   (tagged-list? exp 'lambda))
+
+(defn make-lambda
+  [parameters body]
+  (conj (conj body parameters) 'lambda))
+
+(defn lambda-parameters
+  [exp]
+  (second exp))
+
+(defn lambda-body
+  [exp]
+  (drop 2 exp))
 
 ; definition
 
@@ -126,3 +138,15 @@
 (defn rest-exps
   [exps]
   (rest exps))
+
+(defn assignment?
+  [exp]
+  (tagged-list? exp 'set!))
+
+(defn assignment-variable
+  [exp]
+  (second exp))
+
+(defn assignment-value
+  [exp]
+  (nth exp 2))

@@ -26,8 +26,8 @@
                       (env/extend-env '(x) '(2)))]
     (t/is (= (env/make-frame (list 'x) (list 1))
              (->> base-env
-                   (env/enclosing-env)
-                   (env/first-frame))))))
+                  (env/enclosing-env)
+                  (env/first-frame))))))
 
 (t/deftest test-lookup-variable-value
   (t/testing "throw ex when var is not found"
@@ -51,7 +51,7 @@
       (env/define-variable! 'x 10 e)
       (t/is (= '((x 10))
                (env/first-frame e)))))
-  
+
   (t/testing "redefine variable"
     (let [e (env/extend-env '(y x) '(30 10) env/empty-env)]
       (env/define-variable! 'x 20 e)
@@ -65,3 +65,29 @@
       (env/define-variable! variable value e)
       (t/is (= (list (list variable value))
                (env/first-frame e))))))
+
+(t/deftest test-set
+  (t/testing "throw ex if variable is not defined"
+    (let [e (env/extend-env '() '() env/empty-env)]
+      (t/is (thrown? Exception
+                     (env/set-variable-value! 'x 10 e)))))
+
+  (t/testing "set variable in current env"
+    (let [e (env/extend-env '() '() env/empty-env)]
+      (env/define-variable! 'x 10 e)
+
+      (env/set-variable-value! 'x 20 e)
+
+      (t/is (= '(((x 20)))
+               e))))
+
+  (t/testing "set variable in enclosing env"
+    (let [e (->> env/empty-env
+                 (env/extend-env '(y x) '(1 10))
+                 (env/extend-env '() '()))]
+
+      (env/set-variable-value! 'x 20 e)
+
+      (t/is (=  '(()
+                  ((y 1) (x 20)))
+                e)))))

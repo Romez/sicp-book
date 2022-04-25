@@ -28,6 +28,14 @@
       (sut/base-eval '(define x 3) e)
       (t/is (= 3 (sut/base-eval 'x e)))))
 
+  (t/testing "set raibale and return new value"
+    (let [e (sut/setup-env)]
+      (sut/base-eval '(define x 1) e)
+
+      (sut/base-eval '(set! x (+ 1 1)) e)
+
+      (t/is (= 2 (sut/base-eval 'x e)))))
+  
   (t/testing "define a function and call it"
     (let [e        (sut/setup-env)
           expected 2]

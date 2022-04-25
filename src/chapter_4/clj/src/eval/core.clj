@@ -38,14 +38,13 @@
 
 (defn eval-sequence
   [exps env]
-  (prn "E: " exps)
-    (cond
-      (expr/last-exp? exps)
-      (base-eval (expr/first-exp exps) env)
+  (cond
+    (expr/last-exp? exps)
+    (base-eval (expr/first-exp exps) env)
 
-      :else
-      (do (base-eval (expr/first-exp exps) env)
-          (eval-sequence (expr/rest-exps exps) env))))
+    :else
+    (do (base-eval (expr/first-exp exps) env)
+        (eval-sequence (expr/rest-exps exps) env))))
 
 (defn apply-proc
   [proc args]
@@ -71,6 +70,12 @@
       (base-eval value env)
       env)))
 
+(defn eval-assignment
+  [exp env]
+  (env/set-variable-value! (expr/assignment-variable exp)
+                           (base-eval (expr/assignment-value exp) env)
+                           env))
+
 (defn base-eval
   [exp env]
   (cond
@@ -82,9 +87,12 @@
 
     (expr/quoted? exp)
     (expr/text-of-quotation exp)
-
+    
     (expr/definition? exp)
     (eval-definition exp env)
+
+    (expr/assignment? exp)
+    (eval-assignment exp env)
 
     (expr/lambda? exp)
     (expr/make-procedure (lambda/lambda-parameters exp)
