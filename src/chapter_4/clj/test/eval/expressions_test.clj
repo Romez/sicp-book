@@ -168,3 +168,26 @@
       (t/is (= '((define x 1)
                  x)
                (sut/begin-actions exp))))))
+
+(t/deftest test-if?
+  (t/is (true? (sut/if? '(if true 1 2))))
+  (t/is (false? (sut/if? '(x)))))
+
+(t/deftest test-if-predicate
+  (t/is (= '(= 1 1)
+           (sut/if-predicate '(if (= 1 1) 1 2)))))
+
+(t/deftest test-if-consequent
+  (t/is (= '(+ 1 1)
+           (sut/if-consequent '(if (= 1 1) (+ 1 1) 2)))))
+
+(t/deftest test-if-alternative
+  (t/testing "if alternative is not null"
+    (t/is
+     (= '(+ 2 3)
+        (sut/if-alternative '(if (= 1 1) (+ 1 1) (+ 2 3))))))
+  (t/testing "if alternative is null"
+    (t/is
+     (= 'false
+        (sut/if-alternative '(if (= 1 2)
+                               (+ 1 1)))))))

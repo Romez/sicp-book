@@ -7,7 +7,8 @@
 
 (def primitive-procedures
   (list (list '+ +)
-        (list '- -)))
+        (list '- -)
+        (list '= =)))
 
 (defn primitive-procedure-names
   [procedures]
@@ -24,9 +25,12 @@
 
 (defn setup-env
   []
-  (env/extend-env (primitive-procedure-names primitive-procedures)
-                  (primitive-procedure-objects primitive-procedures)
-                  env/empty-env))
+  (let [e (env/extend-env
+           (primitive-procedure-names primitive-procedures)
+           (primitive-procedure-objects primitive-procedures)
+           env/empty-env)]
+    (env/define-variable! 'true true e)
+    e))
 
 (defn list-of-values
   [ops env]
@@ -75,6 +79,12 @@
                            (base-eval (expr/assignment-value exp) env)
                            env))
 
+(defn eval-if
+  [exp env]
+  (if (true? (base-eval (expr/if-predicate exp) env))
+    (base-eval (expr/if-consequent exp) env)
+    (base-eval (expr/if-alternative exp) env)))
+
 (defn base-eval
   [exp env]
   (cond
@@ -90,6 +100,9 @@
     (expr/definition? exp)
     (eval-definition exp env)
 
+    (expr/if? exp)
+    (eval-if exp env)
+    
     (expr/assignment? exp)
     (eval-assignment exp env)
 

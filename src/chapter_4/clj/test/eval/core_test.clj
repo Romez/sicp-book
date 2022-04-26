@@ -86,3 +86,16 @@
             (list 'primitive +)
             (list 1 2 3)))))
 
+(t/deftest test-boolean
+  (let [e (sut/setup-env)]
+    (t/is (true? (sut/base-eval 'true e)))
+    (t/is (false? (sut/base-eval 'false e)))))
+
+(t/deftest test-if-eval
+  (let [e (sut/setup-env)]
+    (t/is (= 10 (sut/base-eval '(if (= 1 1)
+                                  (+ 5 5)
+                                  (+ 10 10))
+                               e)))
+    (t/is (= 10 (sut/base-eval '(if true 10) e)))
+    (t/is (false? (sut/base-eval '(if false 10) e)))))
