@@ -8,7 +8,10 @@
 (def primitive-procedures
   (list (list '+ +)
         (list '- -)
-        (list '= =)))
+        (list '* *)
+        (list '= =)
+        (list '< <)
+        (list '> >)))
 
 (defn primitive-procedure-names
   [procedures]
@@ -115,6 +118,15 @@
     (eval-sequence (expr/begin-actions exp)
                    env)
 
+    (expr/cond? exp)
+    (base-eval
+     (expr/cond->if exp)
+     env)
+
+    (expr/let? exp)
+    (base-eval (expr/let->combination exp)
+               env)
+    
     (expr/application? exp)
     (apply-proc
      (base-eval (expr/operator exp) env)

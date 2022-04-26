@@ -109,7 +109,7 @@
 
 (defn application?
   [exp]
-  (list? exp))
+  (seq? exp))
 
 (defn operator
   [exp]
@@ -155,6 +155,10 @@
   [exp]
   (nth exp 2))
 
+(defn make-begin
+  [exps]
+  (conj exps 'begin))
+
 (defn begin?
   [exp]
   (tagged-list? exp 'begin))
@@ -162,6 +166,10 @@
 (defn begin-actions
   [exp]
   (rest exp))
+
+(defn make-if
+  [predicate consequent alternative]
+  (list 'if predicate consequent alternative))
 
 (defn if?
   [exp]
@@ -178,3 +186,75 @@
 (defn if-alternative
   [exp]
   (nth exp 3 'false))
+
+(defn sequence->exp
+  [s]
+  (cond
+    (empty? s)
+    '()
+
+    (last-exp? s)
+    (first-exp s)
+
+    :else
+    (make-begin s)))
+
+(defn cond?
+  [exp]
+  (tagged-list? exp 'cond))
+
+(defn cond-clauses
+  [exp]
+  (rest exp))
+
+(defn cond-predicate
+  [clause]
+  (first clause))
+
+(defn cond-else-clause?
+  [exp]
+  (= 'else (cond-predicate exp)))
+
+(defn cond-actions
+  [clause]
+  (rest clause))
+
+(defn expand-clauses
+  [clauses]
+  (if (empty? clauses)
+    'false
+    (let [first-clause (first clauses)
+          rest-clauses (rest clauses)]
+      (if (cond-else-clause? first-clause)
+        (if (empty? rest-clauses)
+          (sequence->exp (cond-actions first-clause))
+          (throw (Exception. "Else clause isn't last -- COND->IF")))
+        (make-if (cond-predicate first-clause)
+                 (sequence->exp (cond-actions first-clause))
+                 (expand-clauses rest-clauses))))))
+
+(defn cond->if
+  [exp]
+  (expand-clauses (cond-clauses exp)))
+
+(defn let?
+  [exp]
+  (tagged-list? exp 'let))
+
+(defn let-body
+  [exp]
+  (drop 2 exp))
+
+(defn let-variables
+  [exp]
+  (map first (second exp)))
+
+(defn let-expressions
+  [exp]
+  (map second (second exp)))
+
+(defn let->combination
+  [exp]
+  (conj (let-expressions exp)
+        (make-lambda (let-variables exp)
+                     (let-body exp))))

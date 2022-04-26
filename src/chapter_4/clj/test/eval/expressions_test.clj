@@ -250,5 +250,32 @@
     (t/testing "throw ex if cond is not last exp"
       (t/is (thrown? Exception
                      (sut/expand-clauses '((else (- x))
-                                           ((> x 0) 0)))))
-      )))
+                                           ((> x 0) 0))))))))
+
+(t/deftest test-let
+  (let [exp '(let ((x (- 4 1)))
+               (display x)
+               (+ x x))]
+    (t/testing "let?"
+      (t/is (true? (sut/let? exp))))
+
+    (t/testing "let-body"
+      (t/is (= '((display x)
+                 (+ x x))
+               (sut/let-body exp))))
+
+    (t/testing "lpet-variables"
+      (t/is (= '(x)
+               (sut/let-variables exp))))
+
+    (t/testing "let-expressions"
+      (t/is (= '((- 4 1))
+               (sut/let-expressions exp))))
+
+    (t/testing "let->combination"
+      (t/is (= '((lambda (x)
+                         (display x)
+                         (+ x x))
+                 (- 4 1))
+               (sut/let->combination exp)))))
+  )

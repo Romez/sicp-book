@@ -99,3 +99,28 @@
                                e)))
     (t/is (= 10 (sut/base-eval '(if true 10) e)))
     (t/is (false? (sut/base-eval '(if false 10) e)))))
+
+(t/deftest test-cond-eval
+  (let [e (sut/setup-env)]
+    (t/is (= 10 (sut/base-eval '(cond
+                                  ((> 2 1) 10)
+                                  (else 0))
+                               e)))
+    (t/is (= 0 (sut/base-eval '(cond
+                                 ((< 2 1) 10)
+                                 (else 0))
+                              e)))))
+
+(t/deftest test-lambda
+  (let [e (sut/setup-env)]
+    (sut/base-eval '((lambda (x y) (+ x y))
+                     (+ 1 1) 1)
+                   e)))
+
+(t/deftest test-let
+  (let [e (sut/setup-env)]
+    (t/is (= 6
+             (sut/base-eval '(let ((x (+ 1 1))
+                                   (y (* 2 2)))
+                               (+ x y))
+                            e)))))

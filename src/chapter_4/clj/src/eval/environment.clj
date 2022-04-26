@@ -24,7 +24,7 @@
                         :else
                         (scan (rest frame))))]
               (if (= env empty-env)
-                (throw (format "%s variable not found" var))
+                (throw (Exception. (format "%s variable not found" var)))
                 (let [frame (first-frame env)]
                   (scan frame)))))]
     (env-loop env)))
