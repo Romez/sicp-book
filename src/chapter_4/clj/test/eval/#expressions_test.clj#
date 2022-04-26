@@ -250,5 +250,4 @@
     (t/testing "throw ex if cond is not last exp"
       (t/is (thrown? Exception
                      (sut/expand-clauses '((else (- x))
-                                           ((> x 0) 0)))))
-      )))
+                                           ((> x 0) 0))))))))
