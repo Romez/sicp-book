@@ -158,3 +158,13 @@
     (t/is (= '(add1 x)
              (sut/assignment-value '(set! x (add1 x)))))))
 
+(t/deftest test-begin
+  (let [exp '(begin
+              (define x 1)
+              x)]
+    (t/testing "begin?"
+      (t/is (true? (sut/begin? exp))))
+    (t/testing "begin actions"
+      (t/is (= '((define x 1)
+                 x)
+               (sut/begin-actions exp))))))

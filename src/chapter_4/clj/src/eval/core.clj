@@ -1,8 +1,7 @@
 (ns eval.core
   (:require
    [eval.environment :as env]
-   [eval.expressions :as expr]
-   [eval.lambda :as lambda]))
+   [eval.expressions :as expr]))
 
 (declare base-eval)
 
@@ -95,9 +94,13 @@
     (eval-assignment exp env)
 
     (expr/lambda? exp)
-    (expr/make-procedure (lambda/lambda-parameters exp)
-                         (lambda/lambda-body exp)
+    (expr/make-procedure (expr/lambda-parameters exp)
+                         (expr/lambda-body exp)
                          env)
+
+    (expr/begin? exp)
+    (eval-sequence (expr/begin-actions exp)
+                   env)
 
     (expr/application? exp)
     (apply-proc

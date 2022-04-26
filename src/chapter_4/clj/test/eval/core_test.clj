@@ -53,6 +53,17 @@
       (t/is (= 4
                (sut/base-eval '(+ 1 1 (+ 1 1)) base-env))))))
 
+(t/deftest test-being-eval
+  (let [e (sut/setup-env)]
+    (t/is (= 1 (sut/base-eval '(begin
+                              (define x 1)
+                              x)
+                              e)))
+    (t/is (= 2 (sut/base-eval '(begin
+                                (define y (+ 1 1))
+                                y)
+                              e)))))
+
 (t/deftest test-primitive-procedures
     (let [primitive-procedures (list (list '+ +)
                                      (list '- -)

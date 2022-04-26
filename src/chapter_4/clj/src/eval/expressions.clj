@@ -1,6 +1,4 @@
-(ns eval.expressions
-  (:require
-   [eval.lambda :as lambda]))
+(ns eval.expressions)
 
 (defn tagged-list?
   [exp tag]
@@ -66,7 +64,7 @@
   [exp]
   (if (symbol? (second exp))
     (nth exp 2)
-    (lambda/make-lambda (-> exp second rest)
+    (make-lambda (-> exp second rest)
                         (doall (drop 2 exp)))))
 
 (defn primitive-procedure?
@@ -150,3 +148,11 @@
 (defn assignment-value
   [exp]
   (nth exp 2))
+
+(defn begin?
+  [exp]
+  (tagged-list? exp 'begin))
+
+(defn begin-actions
+  [exp]
+  (rest exp))
