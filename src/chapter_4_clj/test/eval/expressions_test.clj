@@ -44,7 +44,11 @@
                  (+ x y 1))
         (sut/definition-value '(define (add x y)
                                  (+ 1 1)
-                                 (+ x y 1)))))))
+                                 (+ x y 1)))))
+    (t/is (= '(lambda (x y)
+                      (lambda (m) (m x y)))
+             (sut/definition-value '(define (cons x y)
+                                      (lambda (m) (m x y))))))))
 
 (t/deftest lambda?
   (t/testing "lambda? predicate"
@@ -56,15 +60,15 @@
   (t/is (= '(lambda (x) x)
            (sut/make-lambda '(x) '(x))))
   (t/is (= '(lambda (x)
-                    (prn x)
+                    (display x)
                     x)
-           (sut/make-lambda '(x) '((prn x)
+           (sut/make-lambda '(x) '((display x)
                                    x))))
   (t/is (= '(lambda (x y)
-                    (prn x y)
+                    (display x y)
                     (+ x y))
            (sut/make-lambda '(x y)
-                            '((prn x y)
+                            '((display x y)
                               (+ x y))))))
 
 (t/deftest test-lambda
@@ -277,5 +281,24 @@
                          (display x)
                          (+ x x))
                  (- 4 1))
-               (sut/let->combination exp)))))
-  )
+               (sut/let->combination exp))))))
+
+(t/deftest test-thunk
+  (let [exp '(add 1 2)
+        e '()]
+    (t/testing "delay-it"
+      (t/is (= '(thunk (add 1 2) ())
+               (sut/delay-it exp e))))
+
+    (t/testing "thunk?"
+      (t/is (true? (sut/thunk?
+                    (sut/delay-it exp e)))))
+
+    (t/testing "thunk exp"
+      (t/is (= exp (sut/thunk-exp
+                    (sut/delay-it exp e)))))
+
+    (t/testing "thunk env"
+      (t/is (= e (sut/thunk-env
+                  (sut/delay-it exp e)))))))
+

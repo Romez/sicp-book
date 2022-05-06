@@ -5,20 +5,23 @@
 
 (t/deftest test-make-frame
   (t/testing "empty frame"
-    (t/is (= '()
+    (t/is (= {}
              (env/make-frame '() '()))))
   (t/testing "frame with values"
-    (t/is (= '((x 1) (y 2))
+    (t/is (= {'x 1
+              'y 2}
              (env/make-frame '(x y) '(1 2))))))
 
 (t/deftest test-add-binding-to-frame
   (let [frame (env/make-frame '() '())]
     (t/testing "add to emtpy frame"
       (env/add-binding-to-frame 'x 1 frame)
-      (t/is (= '((x 1)) frame)))
+      (t/is (= {'x 1} frame)))
+    
     (t/testing "append to frame"
       (env/add-binding-to-frame 'y 2 frame)
-      (t/is (= '((y 2) (x 1)) frame)))))
+      (t/is (= {'x 1 'y 2}
+               frame)))))
 
 (t/deftest test-enclosing-env
   (let [base-env (->> env/empty-env
@@ -49,21 +52,24 @@
   (t/testing "define variable"
     (let [e (env/extend-env '() '() env/empty-env)]
       (env/define-variable! 'x 10 e)
-      (t/is (= '((x 10))
+      (t/is (= {'x 10}
                (env/first-frame e)))))
 
   (t/testing "redefine variable"
     (let [e (env/extend-env '(y x) '(30 10) env/empty-env)]
       (env/define-variable! 'x 20 e)
-      (t/is (= '((y 30) (x 20))
+      (t/is (= {'x 20
+                'y 30}
                (env/first-frame e)))))
 
   (t/testing "define function"
-    (let [e (env/extend-env '() '() env/empty-env)
+    (let [e        (env/extend-env '() '() env/empty-env)
           variable 'add
           value    '(procedure (x y) (+ x y 1) '())]
-      (env/define-variable! variable value e)
-      (t/is (= (list (list variable value))
+      (env/define-variable!
+        'add
+        '(procedure (x y) (+ x y 1) '()) e)
+      (t/is (= {'add '(procedure (x y) (+ x y 1) '())}
                (env/first-frame e))))))
 
 (t/deftest test-set
@@ -77,8 +83,8 @@
       (env/define-variable! 'x 10 e)
 
       (env/set-variable-value! 'x 20 e)
-
-      (t/is (= '(((x 20)))
+      
+      (t/is (= '({x 20})
                e))))
 
   (t/testing "set variable in enclosing env"
@@ -88,6 +94,6 @@
 
       (env/set-variable-value! 'x 20 e)
 
-      (t/is (=  '(()
-                  ((y 1) (x 20)))
+      (t/is (=  '({}
+                  {y 1 x 20})
                 e)))))

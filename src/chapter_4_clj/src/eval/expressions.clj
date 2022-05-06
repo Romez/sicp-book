@@ -258,3 +258,19 @@
   (conj (let-expressions exp)
         (make-lambda (let-variables exp)
                      (let-body exp))))
+
+(defn delay-it
+  [exp env]
+  (list 'thunk exp env))
+
+(defn thunk?
+  [obj]
+  (tagged-list? obj 'thunk))
+
+(defn thunk-exp
+  [thunk]
+  (second thunk))
+
+(defn thunk-env
+  [thunk]
+  (nth thunk 2))

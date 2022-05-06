@@ -124,3 +124,25 @@
                                    (y (* 2 2)))
                                (+ x y))
                             e)))))
+
+(t/deftest test-lazy-eval
+  (let [e (sut/setup-env)]
+    (sut/base-eval '(define (try a b)
+                               (if (= a 0) 1 b))
+                            e)
+    (t/is (= 1 (sut/base-eval '(try 0 (/ 1 0)) e)))))
+
+(t/deftest test-cons
+  (let [e (sut/setup-env)]
+    (sut/base-eval '(define x 1) e)
+    (sut/base-eval '(define x (cons 1 2)) e)
+
+    (t/is (= 1 (sut/base-eval '(car x) e)))
+
+    #_(t/is (= '2 (sut/base-eval '(cdr x) e)))
+
+    #_(t/is (= 3 (sut/base-eval '(car (lambda (m)
+                                            (m 3 1))) e)))
+
+    ))
+
